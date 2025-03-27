@@ -6,7 +6,20 @@ export function enrollUserInCourse(userId, courseId) {
     enrollments.push({ _id: uuidv4(), user: userId, course: courseId });
 }
 
-export function unenrollUserInCourse(userId, courseId) {
+export function unenrollUserFromCourse(userId, courseId) {
     const { enrollments } = Database;
-    enrollments.push({ _id: uuidv4(), user: userId, course: courseId });
+    const initialLength = enrollments.length;
+    Database.enrollments = enrollments.filter(
+        (enrollment) =>
+            !(enrollment.user === userId && enrollment.course === courseId)
+    );
+    return Database.enrollments.length < initialLength;
+}
+
+export function findEnrollmentsForUser(userId) {
+    const { enrollments } = Database;
+    const userEnrollments = enrollments.filter(
+        (enrollment) => enrollment.user === userId
+    );
+    return userEnrollments;
 }
