@@ -1,0 +1,23 @@
+export default [
+    {
+        _id: "Q101",
+        course: "RS101",
+        title: "",
+        type: "GRADED QUIZ",
+        points: "100",
+        assignmentGroup: "QUIZZES",
+        shuffleAnswers: "YES",
+        timeLimit: "20",
+        multipleAttempts: "NO",
+        numAttempts: "1",
+        showCorrectAnswers: "",
+        accessCode: "",
+        oneAtATime: "YES",
+        webcamRequired: "NO",
+        lockAfterAnswer: "NO",
+        dueDate: "",
+        availableDate: "",
+        untilDate: "",
+        published: "YES",
+    },
+];

@@ -1,0 +1,32 @@
+export default [
+    {
+        _id: "1",
+        quizID: "Q101",
+        title: "Basic Rocket Fuel",
+        type: "multiple-choice",
+        points: 10,
+        answers: ["Water", "Gasoline", "Rocket Fuel", "Wood"],
+        correctAnswer: "Rocket Fuel",
+        description: "Which of the following is used to power most rockets?",
+    },
+    {
+        _id: "2",
+        quizID: "Q101",
+        title: "Rocket Motion",
+        type: "true-false",
+        points: 5,
+        answers: [],
+        correctAnswer: "True",
+        description: "Rockets move forward by pushing gases backward.",
+    },
+    {
+        _id: "3",
+        quizID: "Q101",
+        title: "Rocket Thrust",
+        type: "fill-in-the-blank",
+        points: 8,
+        answers: [],
+        correctAnswer: "Thrust",
+        description: "The force that pushes a rocket upwards is called _____.",
+    },
+];
