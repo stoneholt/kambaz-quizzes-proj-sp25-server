@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export function findQuestionsForQuiz(quizId) {
     const { questions } = Database;
-    return questions.filter((question) => question.course === quizId);
+    return questions.filter((question) => question.quizID === quizId);
 }
 
 export function createQuestion(question) {
