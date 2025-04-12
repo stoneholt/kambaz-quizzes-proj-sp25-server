@@ -25,13 +25,47 @@ export default function QuizRoutes(app) {
         res.json(questions);
     });
 
-    app.post("/api/quizzes/:quizId/questions", (req, res) => {
+    app.post("/api/quizzes/:quizId/questions", async (req, res) => {
         const { quizId } = req.params;
         const question = {
             ...req.body,
             quizID: quizId,
         };
+
         const newQuestion = questionsDao.createQuestion(question);
+        if (!newQuestion) {
+            return res.status(500);
+        }
+
+        const updatedQuiz = await quizzesDao.addQuestionToQuiz(
+            quizId,
+            newQuestion._id
+        );
+        if (!updatedQuiz) {
+            return res.status(404);
+        }
+
         res.send(newQuestion);
+    });
+
+    app.delete("/api/quizzes/:quizId/:questionId", async (req, res) => {
+        const { quizId, questionId } = req.params;
+
+        const deleted = await questionsDao.deleteQuestion(questionId);
+
+        if (!deleted) {
+            return res.status(404);
+        }
+
+        const updatedQuiz = quizzesDao.removeQuestionFromQuiz(
+            quizId,
+            questionId
+        );
+
+        if (!updatedQuiz) {
+            return res.status(404);
+        }
+
+        res.sendStatus(204);
     });
 }

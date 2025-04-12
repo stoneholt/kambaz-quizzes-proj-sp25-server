@@ -6,6 +6,26 @@ export function findQuizzesForCourse(courseId) {
     return quizzes.filter((quiz) => quiz.course === courseId);
 }
 
+export function addQuestionToQuiz(quizId, questionId) {
+    const { quizzes } = Database;
+    const quiz = quizzes.find((q) => q._id === quizId);
+    if (!quiz.qids) {
+        quiz.qids = [];
+    }
+    quiz.qids = [...quiz.qids, questionId];
+    return quiz;
+}
+
+export function removeQuestionFromQuiz(quizId, questionId) {
+    const { quizzes } = Database;
+    const quiz = quizzes.find((q) => q._id === quizId);
+    if (!quiz) return null;
+    if (!quiz.qids) return null;
+
+    quiz.qids = quiz.qids.filter((id) => id !== questionId);
+    return quiz;
+}
+
 export function createQuiz(quiz) {
     const newQuiz = { ...quiz, _id: uuidv4() };
     Database.quizzes = [...Database.quizzes, newQuiz];
