@@ -13,3 +13,9 @@ export function findLatestAttemptForQuiz(quizId, userId) {
         .filter((a) => a.quiz_id === quizId && a.user_id === userId)
         .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
 }
+
+export function findTotalAttempts(quizId, userId) {
+    const { attempts } = Database;
+    return attempts.filter((a) => a.quiz_id === quizId && a.user_id === userId)
+        .length;
+}

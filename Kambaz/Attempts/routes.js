@@ -18,7 +18,7 @@ export default function AttemptsRoutes(app) {
         res.send(newAttempt);
     });
 
-    app.get("/api/attempts/:quizId", async (req, res) => {
+    app.get("/api/attempts/:quizId/latest", async (req, res) => {
         const { quizId } = req.params;
         const currentUser = req.session["currentUser"];
 
@@ -30,5 +30,19 @@ export default function AttemptsRoutes(app) {
             return res.status(404);
         }
         res.json(latestAttempt);
+    });
+
+    app.get("/api/attempts/:quizId", async (req, res) => {
+        const { quizId } = req.params;
+        const currentUser = req.session["currentUser"];
+
+        const numAttempts = await attemptsDao.findTotalAttempts(
+            quizId,
+            currentUser._id
+        );
+        if (!numAttempts) {
+            return res.status(404);
+        }
+        res.json(numAttempts);
     });
 }
