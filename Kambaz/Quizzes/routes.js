@@ -69,28 +69,4 @@ export default function QuizRoutes(app) {
 
         res.sendStatus(204);
     });
-
-    app.get("/api/quizzes/:quizId/:userId", async (req, res) => {
-        let { quizId, userId } = req.params;
-        const latestAttempt = attemptsDao.findLatestAttemptForQuiz(
-            quizId,
-            userId
-        );
-        res.send(latestAttempt);
-    });
-
-    app.post("/api/quizzes/:quizId/attempts", async (req, res) => {
-        const { quizId } = req.params;
-        const attempt = {
-            ...req.body,
-            quiz_id: quizId,
-        };
-
-        const newAttempt = attemptsDao.createAttempt(attempt);
-        if (!newAttempt) {
-            return res.status(500);
-        }
-
-        res.send(newAttempt);
-    });
 }

@@ -12,6 +12,7 @@ import ModuleRoutes from "./Kambaz/Modules/routes.js";
 import AssignmentRoutes from "./Kambaz/Assignments/routes.js";
 import QuizRoutes from "./Kambaz/Quizzes/routes.js";
 import QuestionRoutes from "./Kambaz/Questions/routes.js";
+import AttemptsRoutes from "./Kambaz/Attempts/routes.js";
 
 const app = express();
 app.use(
@@ -43,6 +44,7 @@ ModuleRoutes(app);
 AssignmentRoutes(app);
 QuizRoutes(app);
 QuestionRoutes(app);
+AttemptsRoutes(app);
 
 Lab5(app);
 Hello(app);
