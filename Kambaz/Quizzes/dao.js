@@ -9,7 +9,7 @@ export function findQuizzesForCourse(courseId) {
 export function createQuiz(quiz) {
     const newQuiz = { ...quiz, _id: uuidv4() };
     Database.quizzes = [...Database.quizzes, newQuiz];
-    return newQuestion;
+    return newQuiz;
 }
 
 export function deleteQuiz(quizId) {
