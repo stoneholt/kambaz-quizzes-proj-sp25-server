@@ -12,10 +12,12 @@ export function createAttempt(attempt) {
 }
 
 export async function findLatestAttemptForQuiz(quizId, userId) {
-    return await AttemptModel.findOne({
-        quiz_id: quizId,
-        user_id: userId,
-    }).sort({ timestamp: -1 });
+    return await model
+        .findOne({
+            quiz_id: quizId,
+            user_id: userId,
+        })
+        .sort({ timestamp: -1 });
 }
 
 export async function findTotalAttempts(quizId, userId) {
