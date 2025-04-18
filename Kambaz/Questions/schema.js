@@ -3,6 +3,10 @@ import mongoose from "mongoose";
 const schema = new mongoose.Schema(
     {
         _id: String,
+        quizID: {
+            type: String,
+            ref: "QuizModel",
+        },
         title: String,
         type: {
             type: String,

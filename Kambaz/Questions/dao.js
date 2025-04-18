@@ -2,7 +2,7 @@ import model from "./model.js";
 import { v4 as uuidv4 } from "uuid";
 
 export async function findQuestionsForQuiz(quizId) {
-    return await model.find({ quizId: quizId });
+    return await model.find({ quizID: quizId });
 }
 
 export async function createQuestion(question) {
