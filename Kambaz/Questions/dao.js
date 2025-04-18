@@ -1,30 +1,21 @@
-import Database from "../Database/index.js";
+import model from "./model.js";
 import { v4 as uuidv4 } from "uuid";
 
-export function findQuestionsForQuiz(quizId) {
-    const { questions } = Database;
-    return questions.filter((question) => question.quizID === quizId);
+export async function findQuestionsForQuiz(quizId) {
+    return await model.find({ quizId: quizId });
 }
 
-export function createQuestion(question) {
-    const newQuestion = { ...question, _id: uuidv4() };
-    Database.questions = [...Database.questions, newQuestion];
-    return newQuestion;
+export async function createQuestion(question) {
+    return await model.create({ ...question, _id: uuidv4() });
 }
 
-export function deleteQuestion(questionID) {
-    const { questions } = Database;
-    const initialLength = questions.length;
-    Database.questions = questions.filter(
-        (question) => question._id !== questionID
+export async function deleteQuestion(questionID) {
+    return await model.deleteOne({ _id: questionID });
+}
+
+export async function updateQuestion(questionID, questionUpdates) {
+    return await model.updateOne(
+        { _id: questionID },
+        { $set: questionUpdates }
     );
-    return Database.questions.length < initialLength;
-}
-
-export function updateQuestion(questionID, questionUpdates) {
-    const { questions } = Database;
-    const question = questions.find((question) => question._id === questionID);
-    if (!question) return null;
-    Object.assign(question, questionUpdates);
-    return question;
 }

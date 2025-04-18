@@ -22,7 +22,7 @@ export default function QuizRoutes(app) {
 
     app.get("/api/quizzes/:quizId", async (req, res) => {
         let { quizId } = req.params;
-        const questions = questionsDao.findQuestionsForQuiz(quizId);
+        const questions = await questionsDao.findQuestionsForQuiz(quizId);
         res.json(questions);
     });
 
@@ -33,7 +33,7 @@ export default function QuizRoutes(app) {
             quizID: quizId,
         };
 
-        const newQuestion = questionsDao.createQuestion(question);
+        const newQuestion = await questionsDao.createQuestion(question);
         if (!newQuestion) {
             return res.status(500);
         }
