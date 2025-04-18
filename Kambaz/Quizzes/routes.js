@@ -38,10 +38,9 @@ export default function QuizRoutes(app) {
             return res.status(500);
         }
 
-        const updatedQuiz = await quizzesDao.addQuestionToQuiz(
-            quizId,
-            newQuestion._id
-        );
+        const updatedQuiz = await quizzesDao.updateQuiz(quizId, {
+            $push: { qids: newQuestion._id },
+        });
         if (!updatedQuiz) {
             return res.status(404);
         }
@@ -58,10 +57,9 @@ export default function QuizRoutes(app) {
             return res.status(404);
         }
 
-        const updatedQuiz = quizzesDao.removeQuestionFromQuiz(
-            quizId,
-            questionId
-        );
+        const updatedQuiz = await quizzesDao.updateQuiz(quizId, {
+            $pull: { qids: newQuestion._id },
+        });
 
         if (!updatedQuiz) {
             return res.status(404);
