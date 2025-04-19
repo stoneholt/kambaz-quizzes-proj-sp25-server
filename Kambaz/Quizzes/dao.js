@@ -13,6 +13,6 @@ export function deleteQuiz(quizId) {
     return model.deleteOne({ _id: quizId });
 }
 
-export function updateQuiz(quizId, quizUpdates) {
-    model.updateOne({ _id: quizId }, { $set: quizUpdates });
+export async function updateQuiz(quizId, quizUpdates) {
+    await model.updateOne({ _id: quizId }, { $set: quizUpdates });
 }

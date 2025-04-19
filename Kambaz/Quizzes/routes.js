@@ -14,7 +14,7 @@ export default function QuizRoutes(app) {
     app.put("/api/quizzes/:quizId", async (req, res) => {
         const { quizId } = req.params;
         const quizUpdates = req.body;
-        const updated = await quizzesDao.updateQuiz(quizId, quizUpdates);
+        const updated = quizzesDao.updateQuiz(quizId, quizUpdates);
         if (updated) {
             res.sendStatus(204);
         }
