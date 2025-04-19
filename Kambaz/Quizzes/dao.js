@@ -12,16 +12,15 @@ export async function createQuiz(quiz) {
     const questions = await questionsModel.find({ quizID: quiz._id });
 
     console.log(quiz);
-    const qids = [];
+    quiz.qids = [];
     for (const question of questions) {
         question.quizID = newQuizID;
         await question.save();
-        qids.push(question._id);
+        quiz.qids.push(question._id);
     }
-    console.log(qids);
     console.log(quiz);
 
-    return model.create({ ...quiz, _id: uuidv4() });
+    return model.create({ ...quiz, _id: newQuizID });
 }
 
 export async function deleteQuiz(quizId) {
