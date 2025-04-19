@@ -13,7 +13,7 @@ export async function createQuestion(question) {
     if (newQuestion) {
         await quizModel.updateOne(
             { _id: question.quizID },
-            { $push: { qids: questionID } }
+            { $push: { qids: questionID }, $inc: { points: question.points } }
         );
     }
 
@@ -21,12 +21,13 @@ export async function createQuestion(question) {
 }
 
 export async function deleteQuestion(quizID, questionID) {
+    const question = await model.findById(questionID);
     const result = await model.deleteOne({ _id: questionID });
 
     if (result.deletedCount > 0) {
         await quizModel.updateOne(
             { _id: quizID },
-            { $pull: { qids: questionID } }
+            { $pull: { qids: questionID }, $inc: { points: -question.points } }
         );
         return true;
     }
@@ -35,8 +36,15 @@ export async function deleteQuestion(quizID, questionID) {
 }
 
 export async function updateQuestion(questionID, questionUpdates) {
-    return await model.updateOne(
-        { _id: questionID },
-        { $set: questionUpdates }
-    );
+    const existingQuestion = await model.findById(questionID);
+
+    await model.updateOne({ _id: questionID }, { $set: questionUpdates });
+
+    const diff = questionUpdates.points - existingQuestion.points;
+    if (diff !== 0) {
+        await quizModel.updateOne(
+            { _id: existingQuestion.quizID },
+            { $inc: { points: pointDifference } }
+        );
+    }
 }
