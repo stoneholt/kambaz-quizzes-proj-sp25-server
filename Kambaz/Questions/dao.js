@@ -13,7 +13,7 @@ export async function createQuestion(question) {
     if (newQuestion) {
         await quizModel.updateOne(
             { _id: question.quizID },
-            { $addToSet: { qids: questionID } }
+            { $push: { qids: questionID } }
         );
     }
 
