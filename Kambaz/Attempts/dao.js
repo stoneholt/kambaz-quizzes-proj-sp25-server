@@ -3,12 +3,9 @@ import * as questionsDao from "../Questions/dao.js";
 import { v4 as uuidv4 } from "uuid";
 
 export async function createAttempt(attempt) {
-    const newAttempt = {
-        ...attempt,
-        score: await scoreAttempt(attempt),
-        _id: uuidv4(),
-    };
-    return model.create(newAttempt);
+    const scoredAttempt = await scoreAttempt(attempt)
+    
+    return model.create(scoredAttempt);
 }
 
 export async function findLatestAttemptForQuiz(quizId, userId) {
@@ -30,13 +27,18 @@ async function scoreAttempt(attempt) {
     let currentScore = 0;
     let totalPoints = 0;
     for (const question of questions) {
-        const userAnswer = String(attempt.answers[question._id]);
-        const correctAnswer = question.correctAnswer;
+        const userAnswer = String(attempt.answers[question._id]).toLowerCase();
+        const correctAnswer = question.correctAnswer.toLowerCase();
 
         if (userAnswer === correctAnswer) {
             currentScore += question.points;
         }
+
+        attempt.answers[question._id] = [String(attempt.answers[question._id]), userAnswer === correctAnswer]
         totalPoints += question.points;
     }
-    return Math.round((currentScore / totalPoints) * 100);
+
+    const percentage = Math.round((currentScore / totalPoints) * 100);
+
+    return  {...attempt, score: percentage, _id: uuidv4()};
 }
