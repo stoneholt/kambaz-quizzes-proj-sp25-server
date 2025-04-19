@@ -10,6 +10,7 @@ const schema = new mongoose.Schema(
             },
         ],
         title: String,
+        description: String,
         type: {
             type: String,
             enum: [
