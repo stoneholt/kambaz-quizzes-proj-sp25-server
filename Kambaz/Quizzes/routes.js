@@ -38,30 +38,15 @@ export default function QuizRoutes(app) {
             return res.status(500);
         }
 
-        const updatedQuiz = await quizzesDao.updateQuiz(quizId, {
-            $push: { qids: newQuestion._id },
-        });
-        if (!updatedQuiz) {
-            return res.status(404);
-        }
-
         res.send(newQuestion);
     });
 
     app.delete("/api/quizzes/:quizId/:questionId", async (req, res) => {
         const { quizId, questionId } = req.params;
 
-        const deleted = await questionsDao.deleteQuestion(questionId);
+        const deleted = await questionsDao.deleteQuestion(quizId, questionId);
 
         if (!deleted) {
-            return res.status(404);
-        }
-
-        const updatedQuiz = await quizzesDao.updateQuiz(quizId, {
-            $pull: { qids: newQuestion._id },
-        });
-
-        if (!updatedQuiz) {
             return res.status(404);
         }
 

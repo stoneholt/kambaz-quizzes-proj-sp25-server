@@ -1,4 +1,5 @@
 import model from "./model.js";
+import quizModel from "../Quizzes/model.js";
 import { v4 as uuidv4 } from "uuid";
 
 export async function findQuestionsForQuiz(quizId) {
@@ -6,11 +7,31 @@ export async function findQuestionsForQuiz(quizId) {
 }
 
 export async function createQuestion(question) {
-    return await model.create({ ...question, _id: uuidv4() });
+    const questionID = uuidv4();
+    const newQuestion = await model.create({ ...question, _id: questionID });
+
+    if (newQuestion) {
+        await quizModel.updateOne(
+            { _id: question.quizID },
+            { $addToSet: { qids: questionID } }
+        );
+    }
+
+    return newQuestion;
 }
 
-export async function deleteQuestion(questionID) {
-    return await model.deleteOne({ _id: questionID });
+export async function deleteQuestion(quizID, questionID) {
+    const result = await model.deleteOne({ _id: questionID });
+
+    if (result.deletedCount > 0) {
+        await quizModel.updateOne(
+            { _id: quizID },
+            { $pull: { qids: questionID } }
+        );
+        return true;
+    }
+
+    return false;
 }
 
 export async function updateQuestion(questionID, questionUpdates) {
