@@ -8,6 +8,9 @@ const schema = new mongoose.Schema(
             default: Date.now,
             required: true,
         },
+        timestamp: {
+            type: Date,
+        },
         user_id: {
             type: String,
             ref: "UserModel",
