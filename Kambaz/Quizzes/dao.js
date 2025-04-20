@@ -11,14 +11,16 @@ export async function createQuiz(quiz) {
 
     const questions = await questionsModel.find({ quizID: quiz._id });
 
-    console.log(quiz);
     quiz.qids = [];
+    let totalPoints = 0;
+
     for (const question of questions) {
         question.quizID = newQuizID;
         await question.save();
         quiz.qids.push(question._id);
+        totalPoints += question.points || 0;
     }
-    console.log(quiz);
+    quiz.points = totalPoints;
 
     return model.create({ ...quiz, _id: newQuizID });
 }
@@ -29,5 +31,14 @@ export async function deleteQuiz(quizId) {
 }
 
 export async function updateQuiz(quizId, quizUpdates) {
+    const questions = await questionsModel.find({ quizID: quizId });
+
+    let totalPoints = 0;
+
+    for (const question of questions) {
+        totalPoints += question.points || 0;
+    }
+    quizUpdates.points = totalPoints;
+
     await model.updateOne({ _id: quizId }, { $set: quizUpdates });
 }
