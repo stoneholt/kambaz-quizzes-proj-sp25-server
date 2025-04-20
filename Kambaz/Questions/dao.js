@@ -53,7 +53,7 @@ export async function updateQuestion(questionID, questionUpdates) {
     if (diff !== 0) {
         await quizModel.updateOne(
             { _id: oldQuestion.quizID },
-            { $inc: { points: pointDiff } }
+            { $inc: { points: diff } }
         );
     }
 
