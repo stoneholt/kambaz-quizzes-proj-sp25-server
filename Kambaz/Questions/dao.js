@@ -49,7 +49,7 @@ export async function updateQuestion(questionID, questionUpdates) {
         { $set: questionUpdates }
     );
 
-    const diff = questionUpdates.points - existingQuestion.points;
+    const diff = questionUpdates.points - oldQuestion.points;
     if (diff !== 0) {
         await quizModel.updateOne(
             { _id: oldQuestion.quizID },
