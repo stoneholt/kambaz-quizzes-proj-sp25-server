@@ -5,8 +5,23 @@ export async function findQuizzesForCourse(courseId) {
     return await model.find({ course: courseId });
 }
 
-export function createQuiz(quiz) {
-    return model.create({ ...quiz, _id: uuidv4() });
+export async function createQuiz(quiz) {
+    const newQuizID = uuidv4();
+
+    const questions = await questionsModel.find({ quizID: quiz._id });
+
+    quiz.qids = [];
+    let totalPoints = 0;
+
+    for (const question of questions) {
+        question.quizID = newQuizID;
+        await question.save();
+        quiz.qids.push(question._id);
+        totalPoints += question.points || 0;
+    }
+    quiz.points = totalPoints;
+
+    return model.create({ ...quiz, _id: newQuizID });
 }
 
 export function deleteQuiz(quizId) {
@@ -14,5 +29,14 @@ export function deleteQuiz(quizId) {
 }
 
 export async function updateQuiz(quizId, quizUpdates) {
+    const questions = await questionsModel.find({ quizID: quizId });
+
+    let totalPoints = 0;
+
+    for (const question of questions) {
+        totalPoints += question.points || 0;
+    }
+    quizUpdates.points = totalPoints;
+
     await model.updateOne({ _id: quizId }, { $set: quizUpdates });
 }
