@@ -1,4 +1,5 @@
 import model from "./model.js";
+import questionsModel from "../Questions/model.js";
 import { v4 as uuidv4 } from "uuid";
 
 export async function findQuizzesForCourse(courseId) {
@@ -24,7 +25,8 @@ export async function createQuiz(quiz) {
     return model.create({ ...quiz, _id: newQuizID });
 }
 
-export function deleteQuiz(quizId) {
+export async function deleteQuiz(quizId) {
+    await questionsModel.deleteMany({ quizID: quizId });
     return model.deleteOne({ _id: quizId });
 }
 
